@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { MapPin, Clock, Star, Share2, ChevronLeft, ChevronRight } from "lucide-react"
+import { MapPin, Clock, Star, Share2, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react" // Import ArrowLeft
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -47,6 +47,16 @@ export function CultureDetail({ data }: CultureDetailProps) {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Tombol Kembali ke Beranda */}
+      <div className="max-w-6xl mx-auto px-4 py-4">
+        <Link href="/">
+          <Button variant="outline" className="bg-white hover:bg-gray-100">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Kembali ke Beranda
+          </Button>
+        </Link>
+      </div>
+
       {/* Hero Section */}
       <div className="bg-white">
         <div className="max-w-6xl mx-auto px-4 py-8">
@@ -197,12 +207,21 @@ export function CultureDetail({ data }: CultureDetailProps) {
           <TabsContent value="lokasi" className="mt-6">
             <div className="bg-white rounded-lg p-6">
               <h3 className="text-xl font-semibold mb-4">Peta Lokasi Asal</h3>
-              <div className="bg-gray-100 h-64 rounded-lg flex items-center justify-center">
-                <p className="text-gray-500">Peta akan ditampilkan di sini</p>
-                <p className="text-sm text-gray-400 ml-2">
-                  ({data.coordinates.lat}, {data.coordinates.lng})
-                </p>
+              <div className="w-full h-64 rounded-lg overflow-hidden">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  allowFullScreen
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={`https://maps.google.com/maps?q=${data.coordinates.lat},${data.coordinates.lng}&z=12&output=embed`}
+                  title={`Peta lokasi ${data.name}`}
+                ></iframe>
               </div>
+              <p className="text-sm text-gray-500 mt-2 text-center">
+                Koordinat: {data.coordinates.lat}, {data.coordinates.lng}
+              </p>
             </div>
           </TabsContent>
         </Tabs>
